@@ -265,7 +265,7 @@ Engineering Student
 
 ------------------------------------------------------------------------
 
-## License
+## Licenses
 
 This project is intended for personal portfolio and educational
 purposes.
