@@ -91,7 +91,7 @@ body.cursor-hover #cursor-trail { width: 60px; height: 60px; }
   font-weight: 800;
   letter-spacing: -0.02em;
   background: linear-gradient(135deg, var(--accent), var(--accent3));
-  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .loader-progress {
@@ -148,7 +148,7 @@ nav.scrolled { padding: 14px 5%; }
   font-weight: 800;
   font-size: 1.15rem;
   background: linear-gradient(135deg, var(--accent), var(--accent3));
-  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-decoration: none;
 }
@@ -331,7 +331,7 @@ h1.hero-name {
 }
 .name-gradient {
   background: linear-gradient(135deg, #fff 0%, var(--accent2) 50%, var(--accent3) 100%);
-  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .hero-tagline {
@@ -406,7 +406,7 @@ h1.hero-name {
   border-radius: 50%;
   padding: 3px;
   background: linear-gradient(var(--angle, 0deg), var(--accent), var(--accent3), var(--accent));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   animation: border-spin 4s linear infinite;
@@ -708,6 +708,16 @@ h1.hero-name {
 .banner-apple {
   background: linear-gradient(135deg, #1a1a1a, #2d2d2d, #1a1a1a);
 }
+.banner-climora {
+  background: linear-gradient(135deg, #0a1a2e, #123a5e, #0a1a2e);
+}
+.banner-climora::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.2), transparent 55%),
+              radial-gradient(circle at 75% 65%, rgba(147, 197, 253, 0.12), transparent 50%);
+}
 .project-featured {
   grid-column: 1 / -1;
   flex-direction: row;
@@ -809,6 +819,16 @@ h1.hero-name {
   color: var(--text2);
 }
 .project-link.secondary:hover { border-color: var(--accent); color: var(--accent); }
+.project-link.disabled {
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  opacity: 0.45;
+  cursor: not-allowed;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.project-link.disabled:hover { border-color: var(--border2); color: var(--text2); }
 
 /* === EXPERIENCE === */
 #experience { background: var(--bg2); }

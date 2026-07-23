@@ -140,7 +140,14 @@
   ============================================================ */
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-      const target = document.querySelector(this.getAttribute('href'));
+      const href = this.getAttribute('href');
+      if (!href || href.length < 2) return; /* skip bare "#" links */
+      let target;
+      try {
+        target = document.querySelector(href);
+      } catch (_) {
+        return; /* not a valid selector — ignore instead of throwing */
+      }
       if (!target) return;
       e.preventDefault();
       const offset = 70;
