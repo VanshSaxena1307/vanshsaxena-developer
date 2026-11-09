@@ -1,0 +1,22 @@
+/* tokens, reset, buttons, navbar */
+:root{--bg:#f4f1ea;--ink:#121212;--card:#fff;--line:#121212;--a:#ffd600;--b:#ff4d8d;--c:#3df5ff;--on-a:#121212;--dot:rgba(18,18,18,.3);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+html{scroll-behavior:smooth;scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(var(--dot) 1.5px,transparent 1.6px) 0 0/26px 26px var(--bg);color:var(--ink);font:400 16px/1.6 'Space Mono',monospace;overflow-x:hidden}
+h1,h2,h3{font-family:'Space Grotesk',sans-serif;line-height:1;margin:0}
+a{color:inherit}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+section{padding:80px 0}
+h2{font-size:clamp(2rem,6vw,3.6rem);text-transform:uppercase;margin-bottom:36px;display:inline-block;background:var(--a);color:var(--on-a);padding:6px 14px;border:3px solid var(--line);box-shadow:6px 6px 0 var(--line)}
+.box{background:var(--card);border:3px solid var(--line);box-shadow:8px 8px 0 var(--line);padding:22px}
+.btn{display:inline-block;font:700 15px 'Space Mono',monospace;text-decoration:none;padding:12px 20px;border:3px solid var(--line);background:var(--a);color:var(--on-a);box-shadow:5px 5px 0 var(--line);transition:transform .12s,box-shadow .12s;cursor:pointer}
+.btn:hover{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--line)}
+.btn.alt{background:var(--card);color:var(--ink)}
+nav{position:fixed;top:0;left:0;right:0;z-index:20;background:var(--bg);border-bottom:3px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px}
+.logo{font:700 1.2rem 'Space Grotesk';text-decoration:none;background:var(--a);color:var(--on-a);padding:2px 10px;border:3px solid var(--line)}
+.links{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.links a{text-decoration:none;padding:4px 10px;font-weight:700}
+.links a:hover{background:var(--b);color:#121212}
+@media(max-width:700px){.links a:not(.hire){display:none}}

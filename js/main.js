@@ -1,237 +1,45 @@
-/* ============================================
-   VANSH SAXENA PORTFOLIO — MAIN.JS
-   Role rotator, GitHub grid, mobile menu,
-   contact form, scroll-to-top, misc utils
-   ============================================ */
-
-(function () {
-  'use strict';
-
-  /* ============================================================
-     1. ROLE ROTATOR
-  ============================================================ */
-  const ROLES = [
-    '"Full Stack Developer"',
-    '"AI Explorer"',
-    '"Web Developer"',
-    '"Coder"',
-    '"Problem Solver"',
-    '"Tech Builder"',
-    '"Future AI Engineer"',
-  ];
-
-  const roleEl = document.getElementById('role-text');
-  let roleIdx  = 0;
-
-  if (roleEl) {
-    setInterval(() => {
-      roleEl.style.opacity = '0';
-      setTimeout(() => {
-        roleIdx = (roleIdx + 1) % ROLES.length;
-        roleEl.textContent  = ROLES[roleIdx];
-        roleEl.style.opacity = '1';
-      }, 320);
-    }, 2200);
-  }
-
-  /* ============================================================
-     2. GITHUB CONTRIBUTION GRID (decorative heatmap)
-  ============================================================ */
-  const ghGrid = document.getElementById('gh-grid');
-
-  if (ghGrid) {
-    const LEVELS = ['', 'l1', 'l2', 'l3', 'l4'];
-    const TOTAL_CELLS = 182; /* 26 cols × 7 rows */
-
-    /* Simulate a realistic contribution pattern */
-    for (let i = 0; i < TOTAL_CELLS; i++) {
-      const cell = document.createElement('div');
-      cell.className = 'gh-cell';
-
-      const rand = Math.random();
-      if (rand > 0.72) {
-        /* Weighted toward lower levels */
-        const weights = [0, 0.45, 0.30, 0.15, 0.10];
-        let cumulative = 0;
-        const r2 = Math.random();
-        for (let lvl = 1; lvl < weights.length; lvl++) {
-          cumulative += weights[lvl];
-          if (r2 < cumulative) {
-            cell.classList.add(LEVELS[lvl]);
-            break;
-          }
-        }
-      }
-
-      /* Tooltip */
-      cell.title = rand > 0.72 ? `${Math.floor(Math.random() * 8 + 1)} contributions` : 'No contributions';
-
-      ghGrid.appendChild(cell);
-    }
-  }
-
-  /* ============================================================
-     3. MOBILE HAMBURGER MENU
-  ============================================================ */
-  const hamburger = document.getElementById('hamburger');
-  const navLinks  = document.getElementById('nav-links');
-  const navCta    = document.getElementById('nav-cta');
-
-  if (hamburger && navLinks) {
-    hamburger.addEventListener('click', () => {
-      const isOpen = hamburger.classList.toggle('open');
-
-      if (isOpen) {
-        navLinks.classList.add('mobile-open');
-        if (navCta) navCta.classList.add('mobile-open');
-      } else {
-        navLinks.classList.remove('mobile-open');
-        if (navCta) navCta.classList.remove('mobile-open');
-      }
-    });
-
-    /* Close menu on link click */
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        hamburger.classList.remove('open');
-        navLinks.classList.remove('mobile-open');
-        if (navCta) navCta.classList.remove('mobile-open');
-      });
-    });
-  }
-
-  /* ============================================================
-     4. CONTACT FORM
-  ============================================================ */
-  const submitBtn = document.getElementById('contact-submit');
-
-  if (submitBtn) {
-    submitBtn.addEventListener('click', () => {
-      const name    = document.getElementById('cf-name')?.value.trim();
-      const email   = document.getElementById('cf-email')?.value.trim();
-      const message = document.getElementById('cf-msg')?.value.trim();
-
-      if (!name || !email || !message) {
-        submitBtn.textContent = 'Please fill all fields ⚠️';
-        submitBtn.style.background = '#f59e0b';
-        setTimeout(() => {
-          submitBtn.textContent  = 'Send Message ✉';
-          submitBtn.style.background = '';
-        }, 2500);
-        return;
-      }
-
-      /* mailto fallback */
-      const subject  = encodeURIComponent(`Portfolio Contact from ${name}`);
-      const body     = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-      window.location.href = `mailto:vanshsaxena2007@outlook.com?subject=${subject}&body=${body}`;
-
-      submitBtn.textContent  = 'Opening Mail App... 📬';
-      submitBtn.style.background = 'var(--green)';
-      setTimeout(() => {
-        submitBtn.textContent  = 'Send Message ✉';
-        submitBtn.style.background = '';
-      }, 3000);
-    });
-  }
-
-  /* ============================================================
-     5. SMOOTH ANCHOR SCROLL (offset for fixed nav)
-  ============================================================ */
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      const href = this.getAttribute('href');
-      if (!href || href.length < 2) return; /* skip bare "#" links */
-      let target;
-      try {
-        target = document.querySelector(href);
-      } catch (_) {
-        return; /* not a valid selector — ignore instead of throwing */
-      }
-      if (!target) return;
-      e.preventDefault();
-      const offset = 70;
-      const top = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    });
-  });
-
-  /* ============================================================
-     6. RESUME DOWNLOAD BUTTON
-     Replace href with your actual resume link or file path
-  ============================================================ */
-  const resumeBtn = document.getElementById('resume-btn');
-  if (resumeBtn) {
-    /* Update this URL to your Google Drive / Dropbox / direct link */
-    resumeBtn.setAttribute('href', 'assets/Vansh_Saxena_Resume.pdf');
-    resumeBtn.setAttribute('download', 'Vansh_Saxena_Resume.pdf');
-    resumeBtn.setAttribute('target', '_blank');
-  }
-
-  /* ============================================================
-     7. STAT COUNTER ANIMATION (About section highlights)
-  ============================================================ */
-  const highlightNums = document.querySelectorAll('.highlight-item .num');
-
-  const counterObs = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const el  = entry.target;
-          const raw = el.textContent.trim();
-          /* Only animate numeric values */
-          const num = parseInt(raw.replace(/\D/g, ''));
-          if (!isNaN(num) && num > 0) {
-            animCount(el, num);
-          }
-          counterObs.unobserve(el);
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-
-  highlightNums.forEach(el => counterObs.observe(el));
-
-  function animCount(el, target) {
-    const suffix = el.textContent.replace(/[0-9]/g, '');
-    let current  = 0;
-    const step   = Math.ceil(target / 40);
-    const iv = setInterval(() => {
-      current = Math.min(current + step, target);
-      el.textContent = current + suffix;
-      if (current >= target) clearInterval(iv);
-    }, 35);
-  }
-
-  /* ============================================================
-     8. YEAR AUTO-UPDATE IN FOOTER
-  ============================================================ */
-  const yearEl = document.querySelector('.footer-left');
-  if (yearEl) {
-    const year = new Date().getFullYear();
-    yearEl.innerHTML = yearEl.innerHTML.replace('2025', year);
-  }
-
-  /* ============================================================
-     9. LAZY-LOAD IMAGES (if any added later)
-  ============================================================ */
-  if ('loading' in HTMLImageElement.prototype) {
-    document.querySelectorAll('img[loading="lazy"]').forEach(img => {
-      img.src = img.dataset.src || img.src;
-    });
-  }
-
-  /* ============================================================
-     10. CONSOLE EASTER EGG
-  ============================================================ */
-  console.log(
-    '%c👋 Hey there, developer!',
-    'font-size: 18px; font-weight: bold; color: #6c63ff;'
-  );
-  console.log(
-    '%cLooking at my source code? I like your curiosity 😄\nLet\'s connect: vanshsaxena2007@outlook.com',
-    'font-size: 13px; color: #9898b8;'
-  );
-
+(function(){
+var $=function(i){return document.getElementById(i)};
+/* typing tagline */
+var el=$('type'),ri=0,ci=0,del=false;
+function tick(){var s=SITE.roles[ri];ci+=del?-1:1;el.textContent=s.slice(0,ci);var t=del?30:60;
+if(!del&&ci==s.length){del=true;t=1400}else if(del&&ci==0){del=false;ri=(ri+1)%SITE.roles.length;t=300}setTimeout(tick,t)}
+tick();
+/* ticker, tech stack, projects */
+$('tick').textContent=SITE.ticker+SITE.ticker+SITE.ticker+SITE.ticker;
+$('stack').innerHTML=SITE.stack.map(function(s){return '<div class="tech"><small>&gt;_ '+s[1]+'</small><b>'+s[0]+'</b></div>'}).join('');
+var cols=["#ffd600","#ff4d8d","#3df5ff"];
+$('projects').innerHTML=SITE.projects.map(function(p,i){return '<article class="box proj"><div class="shot" style="background:'+cols[i%3]+'">'+(p[5]?'<img src="'+p[5]+'" alt="'+p[0]+' preview" loading="lazy">':p[0])+'</div><div class="in"><h3>'+p[0]+'</h3><p>'+p[1]+'</p><div class="tags">'+p[2].map(function(t){return '<span>'+t+'</span>'}).join('')+'</div>'+(p[3]=='#'?'<span class="btn alt">LINK COMING SOON</span>':'<a class="btn" href="'+p[3]+'" target="_blank" rel="noopener">'+p[4]+'</a>')+'</div></article>'}).join('');
+/* hero cube follows the pointer */
+var cube=$('cube'),stage=cube.parentNode;
+stage.addEventListener('pointermove',function(e){var r=stage.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;cube.style.animationPlayState='paused';cube.style.transform='rotateX('+(-y*180)+'deg) rotateY('+(x*180)+'deg)'});
+stage.addEventListener('pointerleave',function(){cube.style.transform='';cube.style.animationPlayState='running'});
+/* reveal on scroll */
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.rev').forEach(function(n){io.observe(n)});
+/* CV button */
+var cv=$('cv');if(SITE.cv){cv.href=SITE.cv;cv.setAttribute('download','')}else{cv.addEventListener('click',function(e){e.preventDefault()})}
+/* reports marquee: repeat cards so the loop is seamless */
+var fd=$('fd'),fo=fd.innerHTML;fd.innerHTML=fo+fo;
+/* heatmaps (placeholder pattern) and badge strips */
+function heat(id){var h='';for(var i=0;i<364;i++)h+='<i style="background:rgba(128,128,128,.28)"></i>';$(id).innerHTML=h}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function badges(id,a){var tr=$(id);if(!a.length)a=['ADD BADGES IN data.js'];
+var h=a.map(function(t){var o=typeof t=='string'?{name:t}:t;return '<div class="bd"><span class="bi'+(o.img?' im':'')+'">'+(o.img?'<img src="'+esc(o.img)+'" alt="" loading="lazy">':'★')+'</span>'+esc(o.name)+'</div>'}).join('');
+var few=a.length<4;tr.classList.toggle('static',few);tr.innerHTML=few?h:h+h}
+window.renderBadges=badges;
+heat('ghh',SITE.github.heat,SITE.github.seed);heat('lch',SITE.leetcode.heat,SITE.leetcode.seed);
+badges('ghb',SITE.github.badges);badges('lcb',SITE.leetcode.badges);
+heat('cch');badges('ccb',SITE.codechef.badges);
+heat('cfh');badges('cfb',SITE.codeforces.badges);
+var fb=SITE.leetcode.fallback||{};if(fb.solved){var tt={easy:900,medium:1900,hard:850};$('lc-total').textContent=fb.solved;if(fb.rank)$('lc-rank').textContent='#'+fb.rank;
+[['e','easy'],['m','medium'],['h','hard']].forEach(function(k){if(fb[k[1]]){$('lc-'+k[0]).textContent=fb[k[1]];$('lc-'+k[0]+'b').style.width=Math.min(100,fb[k[1]]/tt[k[1]]*100)+'%'}})}
+/* mobile menu */
+var bg=$('burger'),mn=$('menu');
+if(bg&&mn){var setMenu=function(o){mn.classList.toggle('open',o);bg.setAttribute('aria-expanded',o?'true':'false')};
+bg.addEventListener('click',function(e){e.stopPropagation();setMenu(!mn.classList.contains('open'))});
+mn.addEventListener('click',function(e){if(e.target.closest('a'))setMenu(false)});
+document.addEventListener('click',function(e){if(!mn.contains(e.target))setMenu(false)});
+addEventListener('keydown',function(e){if(e.key=='Escape')setMenu(false)});
+addEventListener('resize',function(){if(innerWidth>820)setMenu(false)})}
 })();
