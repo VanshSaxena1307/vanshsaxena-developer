@@ -24,5 +24,14 @@ var SITE={
     {name:"Problem Solver Bronze",img:"https://cdn.codechef.com/images/badges/problem/bronze.svg"},
     "C++ Skill Test 93%","237 Problems Solved","11 Contests"]},
   /* Codeforces: rating, rank, contests, solved count and heatmap load live from the official API */
-  codeforces:{user:"Vansh_Saxena_1307",heat:["#f9c0c2","#f0787d","#c9262c"],badges:[]}
+  codeforces:{user:"Vansh_Saxena_1307",heat:["#f9c0c2","#f0787d","#c9262c"],badges:[]},
+  /* optional: your own background track, e.g. "assets/audio/bg.mp3". Leave "" for the built-in soft cyberpunk background. */
+  sound:{bg:""},
+  /* Reviews shown in the User_Reviews section. Add only genuine reviews you have permission to show.
+     rating can be 1-5 (halves like 4.5 work). Cards scroll sideways on their own and pause on hover. */
+  reviews:[
+    {name:"User",role:"Hajiri",rating:4.5,text:"Fantastic UI/UX, and the animations run so smoothly."},
+    {name:"User",role:"Expense Tracker",rating:5,text:"It helps me manage my daily expenses."},
+    {name:"User",role:"Portfolio",rating:4,text:"Your website's theme is crazy good."}
+  ]
 };

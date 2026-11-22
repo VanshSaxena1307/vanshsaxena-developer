@@ -2,7 +2,7 @@
 var $=function(i){return document.getElementById(i)};
 /* typing tagline */
 var el=$('type'),ri=0,ci=0,del=false;
-function tick(){var s=SITE.roles[ri];ci+=del?-1:1;el.textContent=s.slice(0,ci);var t=del?30:60;
+function tick(){var s=SITE.roles[ri];ci+=del?-1:1;el.textContent=s.slice(0,ci);if(!del&&window.SND&&!SND.done){SND.type();if(ci==s.length)SND.done=true}var t=del?30:60;
 if(!del&&ci==s.length){del=true;t=1400}else if(del&&ci==0){del=false;ri=(ri+1)%SITE.roles.length;t=300}setTimeout(tick,t)}
 tick();
 /* ticker, tech stack, projects */
@@ -20,7 +20,13 @@ document.querySelectorAll('.rev').forEach(function(n){io.observe(n)});
 /* CV button */
 var cv=$('cv');if(SITE.cv){cv.href=SITE.cv;cv.setAttribute('download','')}else{cv.addEventListener('click',function(e){e.preventDefault()})}
 /* reports marquee: repeat cards so the loop is seamless */
-var fd=$('fd'),fo=fd.innerHTML;fd.innerHTML=fo+fo;
+/* reviews from data.js */
+var rlist=SITE.reviews||[],rl=$('rvlist');
+function stars(n){var f=Math.floor(n),hf=n-f>=.5?1:0,e=5-f-hf;
+return '<div class="rrow"><span class="stars" aria-label="'+n+' out of 5">'+'★'.repeat(f)+(hf?'<b class="hs">★</b>':'')+'<i>'+'★'.repeat(e)+'</i></span><span class="rt">'+n+'/5</span></div>'}
+if(!rlist.length){$('reviews').hidden=true}
+else{var rc=rlist.map(function(r){return '<div class="box"><p class="rq">“'+esc(r.text)+'”</p>'+stars(+r.rating||0)+'<small>'+esc(r.name)+(r.role?' / '+esc(r.role):'')+'</small></div>'}).join('');
+var cp=Math.max(1,Math.ceil(6/rlist.length)),bb=new Array(cp+1).join(rc);rl.className='rvlist mq';rl.innerHTML='<div class="mq-track feed">'+bb+bb+'</div>'}
 /* heatmaps (placeholder pattern) and badge strips */
 function heat(id){var h='';for(var i=0;i<364;i++)h+='<i style="background:rgba(128,128,128,.28)"></i>';$(id).innerHTML=h}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
