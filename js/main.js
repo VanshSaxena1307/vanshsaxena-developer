@@ -48,4 +48,9 @@ mn.addEventListener('click',function(e){if(e.target.closest('a'))setMenu(false)}
 document.addEventListener('click',function(e){if(!mn.contains(e.target))setMenu(false)});
 addEventListener('keydown',function(e){if(e.key=='Escape')setMenu(false)});
 addEventListener('resize',function(){if(innerWidth>820)setMenu(false)})}
+/* scroll progress line */
+var nv=document.querySelector('nav'),pg=document.createElement('div'),tk=false;
+if(nv){pg.className='prog';pg.setAttribute('aria-hidden','true');nv.appendChild(pg);
+var upd=function(){var h=document.documentElement,mx=h.scrollHeight-h.clientHeight;pg.style.setProperty('--p',mx>0?Math.min(1,h.scrollTop/mx):0);tk=false};
+addEventListener('scroll',function(){if(!tk){tk=true;requestAnimationFrame(upd)}},{passive:true});upd()}
 })();

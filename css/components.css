@@ -475,3 +475,16 @@ body::before,body::after{position:fixed;top:50%;z-index:1;pointer-events:none;wr
 body::before{content:"VANSH.exe  //  WEB DEVELOPER  //  2026";left:26px;transform:translateY(-50%) rotate(180deg);border-right:3px solid var(--line);padding-right:14px}
 body::after{content:"ABOUT  ·  SKILLS  ·  LOGS  ·  WORK  ·  CONTACT";right:26px;transform:translateY(-50%);border-right:3px solid var(--line);padding-right:14px}
 }
+
+/* custom scrollbar (Chrome, Edge, Safari) */
+::-webkit-scrollbar{width:16px;height:16px}
+::-webkit-scrollbar-track{background:radial-gradient(var(--dot) 1px,transparent 1.3px) 0 0/8px 8px var(--bg);border-left:3px solid var(--line)}
+::-webkit-scrollbar-thumb{background:var(--a);border:3px solid var(--line)}
+::-webkit-scrollbar-thumb:hover{background:var(--b)}
+::-webkit-scrollbar-thumb:active{background:var(--c)}
+::-webkit-scrollbar-corner{background:var(--bg)}
+/* Firefox */
+@supports (-moz-appearance:none){html{scrollbar-width:auto;scrollbar-color:var(--a) var(--bg)}}
+/* reading progress line under the navbar */
+nav{position:fixed}
+.prog{position:absolute;left:0;right:0;bottom:-3px;height:3px;background:var(--b);transform-origin:left;transform:scaleX(var(--p,0));pointer-events:none}
